@@ -1,0 +1,14 @@
+[submodule "NPB3.4-OMP-custom-makefile-arm"]
+    path = src/looppoint-use-disk/files/arm/NPB3.4-OMP-custom-makefile
+    url = git@github.com:studyztp/NPB3.4-OMP-custom-makefile.git
+    branch = m5_baseline_azacca
+ 
+[submodule "NPB3.4-OMP-custom-makefile-x86"]
+    path = src/looppoint-use-disk/files/x86/NPB3.4-OMP-custom-makefile
+    url = git@github.com:studyztp/NPB3.4-OMP-custom-makefile.git
+    branch = m5_baseline_azacca
+
+[submodule "NPB3.4-OMP-custom-makefile-riscv"]
+    path = src/looppoint-use-disk/files/riscv/NPB3.4-OMP-custom-makefile
+    url = git@github.com:studyztp/NPB3.4-OMP-custom-makefile.git
+    branch = m5_baseline_azacca
