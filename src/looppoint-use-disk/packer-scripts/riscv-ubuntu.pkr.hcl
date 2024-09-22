@@ -58,9 +58,9 @@ source "qemu" "initialize" {
   shutdown_command = "echo '${var.ssh_password}'|sudo -S shutdown -P now"
   ssh_password     = "${var.ssh_password}"
   ssh_username     = "${var.ssh_username}"
-  ssh_wait_timeout = "60m"
+  ssh_wait_timeout = "200m"
   vm_name          = "${var.image_name}"
-  ssh_handshake_attempts = "1000"
+  ssh_handshake_attempts = "2000"
 }
 
 build {
