@@ -9,7 +9,7 @@ packer {
 
 variable "image_name" {
   type    = string
-  default = "arm-nugget-C-8-threads-disk"
+  default = "arm-nugget-disk"
 }
 
 variable "ssh_password" {

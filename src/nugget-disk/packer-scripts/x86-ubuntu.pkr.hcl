@@ -10,7 +10,7 @@ packer {
 
 variable "image_name" {
   type    = string
-  default = "x86-ubuntu"
+  default = "x86-nugget-disk"
 }
 
 variable "ssh_password" {
