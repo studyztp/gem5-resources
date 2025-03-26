@@ -31,7 +31,7 @@ locals {
 }
 
 source "qemu" "initialize" {
-  accelerator      = "kvm"
+  accelerator      = "tcg"  # Switch to software emulation
   boot_command     = ["e<wait>",
                       "<down><down><down>",
                       "<end><bs><bs><bs><bs><wait>",
@@ -48,7 +48,12 @@ source "qemu" "initialize" {
   memory           = "8192"
   output_directory = local.iso_data.output_dir
   qemu_binary      = "/usr/bin/qemu-system-x86_64"
-  qemuargs         = [["-cpu", "host"], ["-display", "none"]]
+
+  qemuargs = [
+    ["-cpu", "Skylake-Client,-avx,-avx2,-fma,-f16c"],
+    ["-display", "none"]
+  ]
+
   shutdown_command = "echo '${var.ssh_password}'|sudo -S shutdown -P now"
   ssh_password     = "${var.ssh_password}"
   ssh_username     = "${var.ssh_username}"
@@ -92,8 +97,8 @@ build {
   }
   
   provisioner "file" {
-  source      = "/home/gem5/vmlinux-x86-ubuntu"
-  destination = "./disk-image/vmlinux-x86-ubuntu"
-  direction   = "download"
+    source      = "/home/gem5/vmlinux-x86-ubuntu"
+    destination = "./disk-image/vmlinux-x86-ubuntu"
+    direction   = "download"
   }
 }

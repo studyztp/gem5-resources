@@ -111,7 +111,10 @@ export LLVM_BIN=/usr/lib/llvm-18/bin
 export LLVM_LIB=/usr/lib/llvm-18/lib
 export LLVM_INCLUDE=/usr/lib/llvm-18/include
 make 
-./check-cpu-features
+
+if [ "${ISA}" = "arm64" ]; then
+    ./check-cpu-features
+fi
 
 # then, we build the gem5-bridge for the linking of the hooks
 cd ../../hook_helper/other_tools/gem5/
