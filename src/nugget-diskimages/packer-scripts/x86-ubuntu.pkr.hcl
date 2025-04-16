@@ -31,7 +31,7 @@ locals {
 }
 
 source "qemu" "initialize" {
-  accelerator      = "tcg"  # Switch to software emulation
+  accelerator      = "kvm"  # Switch to software emulation
   boot_command     = ["e<wait>",
                       "<down><down><down>",
                       "<end><bs><bs><bs><bs><wait>",
@@ -50,7 +50,7 @@ source "qemu" "initialize" {
   qemu_binary      = "/usr/bin/qemu-system-x86_64"
 
   qemuargs = [
-    ["-cpu", "Skylake-Client,-avx,-avx2,-fma,-f16c"],
+    ["-cpu", "host"],
     ["-display", "none"]
   ]
 
@@ -90,6 +90,11 @@ build {
     source      = "files/base_config.cmake"
   }
 
+  provisioner "file" {
+    destination = "/home/gem5/"
+    source      = "files/llc-command.txt"
+  }
+
   provisioner "shell" {
     execute_command = "echo '${var.ssh_password}' | {{ .Vars }} sudo -E -S bash '{{ .Path }}'"
     scripts         = ["scripts/post-installation.sh"]
@@ -99,6 +104,12 @@ build {
   provisioner "file" {
     source      = "/home/gem5/vmlinux-x86-ubuntu"
     destination = "./disk-image/vmlinux-x86-ubuntu"
+    direction   = "download"
+  }
+
+  provisioner "file" {
+    source      = "/home/gem5/addr_map.json"
+    destination = "./output/x86/addr_map.json"
     direction   = "download"
   }
 }

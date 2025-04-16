@@ -98,7 +98,7 @@ pip3 install cmake
 export LD_LIBRARY_PATH=/usr/lib/llvm-18/lib
 
 # not using --recurse-submodules because nugget_util is a ssh submodule
-git clone https://github.com/darchr/nugget-protocol-NPB.git --single-branch --branch=saphir-based-experiments
+git clone https://github.com/darchr/nugget-protocol-NPB.git --single-branch --branch=nugget-gem5
 cd nugget-protocol-NPB
 # change to use the http submodule
 git config --file .gitmodules submodule.nugget_util.url https://github.com/studyztp/nugget_util.git 
@@ -125,15 +125,35 @@ cd ../../../../
 # we need to replace the base-config with the one that matches this system's library layout
 cp /home/gem5/base_config.cmake experiments/cmake/base_config.cmake
 
+if [ "${ISA}" = "x86" ]; then
+cp /home/gem5/llc-command.txt nugget_util/cmake/check-cpu-features/llc-command.txt
+fi
+
 # lastly, we build the nugget-protocol-NPB
 cd cbuild
-NUGGET_PROCESS_TYPE=npb-naive-exe NUGGET_CONFIG_FILE=${PWD}/../experiments/multi-threaded-m5-naive/cmake/naive-exe.cmake cmake ..
+NUGGET_PROCESS_TYPE=npb-naive-exe NUGGET_CONFIG_FILE=${PWD}/../experiments/gem5-m5-naive/cmake/naive-exe.cmake TARGET_CLASSES=A cmake ..
 cmake --build . --target=m5_naive_exe 
+
+echo "Done installing all m5 naive_exe files"
+
+NUGGET_PROCESS_TYPE=npb-nugget-exe NUGGET_CONFIG_FILE=${PWD}/../experiments/gem5-m5-nuggets/cmake/naive-exe.cmake TARGET_CLASSES=A cmake ..
+cmake --build . --target=m5_nugget_exe 
+echo "Done installing all m5 nugget_exe files"
 
 # all built binaries can be found in the cbuild directory
 cd llvm-exec
 ls */
 echo ${PWD}
+
+cd ../../
+
+python3 utils/get_marker_PC.py 
+
+cd ..
+
+cp nugget-protocol-NPB/addr_map.json .
+
+echo "Done getting the marker PC"
 
 echo "Done installing nugget-protocol-NPB"
 

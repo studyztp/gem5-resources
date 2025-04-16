@@ -127,4 +127,11 @@ build {
     environment_vars = ["ISA=arm64"]
     expect_disconnect = true
   }
+
+  provisioner "file" {
+    source      = "/home/gem5/addr_map.json"
+    destination = "./output/arm/addr_map.json"
+    direction   = "download"
+  }
+
 }
