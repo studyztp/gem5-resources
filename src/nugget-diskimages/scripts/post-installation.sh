@@ -140,6 +140,14 @@ NUGGET_PROCESS_TYPE=npb-nugget-exe NUGGET_CONFIG_FILE=${PWD}/../experiments/gem5
 cmake --build . --target=m5_nugget_exe 
 echo "Done installing all m5 nugget_exe files"
 
+NUGGET_PROCESS_TYPE=npb-nugget-exe NUGGET_CONFIG_FILE=${PWD}/../experiments/gem5-4-threads-m5-nuggets/cmake/naive-exe.cmake TARGET_CLASSES=A cmake ..
+cmake --build . --target=m5_nugget_4_threads_exe 
+echo "Done installing all m5 nugget_4_threads_exe files"
+
+NUGGET_PROCESS_TYPE=npb-naive-exe NUGGET_CONFIG_FILE=${PWD}/../experiments/gem5-4-threads-m5-naive/cmake/naive-exe.cmake TARGET_CLASSES=A cmake .. 
+cmake --build . --target=m5_naive_4_threads_exe
+echo "Done installing all m5 naive_4_threads_exe files"
+
 # all built binaries can be found in the cbuild directory
 cd llvm-exec
 ls */
