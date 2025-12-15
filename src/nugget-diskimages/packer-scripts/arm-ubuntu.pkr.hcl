@@ -33,7 +33,7 @@ locals {
 
 variable "use_kvm" {
   type    = string
-  default = "true"
+  default = "false"
   validation {
     condition     = contains(["true", "false"], var.use_kvm)
     error_message = "KVM option must be either 'true' or 'false'."

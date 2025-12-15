@@ -31,7 +31,6 @@ locals {
 }
 
 source "qemu" "initialize" {
-  accelerator      = "kvm"  # Switch to software emulation
   boot_command     = ["e<wait>",
                       "<down><down><down>",
                       "<end><bs><bs><bs><bs><wait>",
@@ -50,7 +49,8 @@ source "qemu" "initialize" {
   qemu_binary      = "/usr/bin/qemu-system-x86_64"
 
   qemuargs = [
-    ["-cpu", "host"],
+    ["-machine", "accel=tcg"],
+    ["-cpu", "Skylake-Server-v1"],  # or "Skylake-Server"
     ["-display", "none"]
   ]
 

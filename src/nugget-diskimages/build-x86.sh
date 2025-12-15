@@ -5,16 +5,29 @@
 
 PACKER_VERSION="1.10.0"
 
-if [ ! -f ./packer-binaries/x86-packer ]; then
-    wget https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_amd64.zip;
-    unzip packer_${PACKER_VERSION}_linux_amd64.zip;
-    rm packer_${PACKER_VERSION}_linux_amd64.zip;
+ARCH=$(uname -m)
+# Set ARCH to arm64 if the architecture is aarch64
+if [ "$ARCH" == "aarch64" ]; then
+    ARCH="arm64"
+elif [ "$ARCH" == "x86_64" ]; then
+    ARCH="amd64"
+else
+    echo "Unsupported architecture: $ARCH"
+    exit 1
+fi
+
+# This part installs the packer binary on the arm64 machine as we are assuming
+# that we are building the disk image on an arm64 machine.
+if [ ! -f ./packer-binaries/${ARCH}-packer ]; then
+    wget https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_${ARCH}.zip;
+    unzip packer_${PACKER_VERSION}_linux_${ARCH}.zip;
+    rm packer_${PACKER_VERSION}_linux_${ARCH}.zip;
     mkdir packer-binaries
-    mv packer packer-binaries/x86-packer
+    mv packer packer-binaries/${ARCH}-packer
 fi
 
 # Install the needed plugins
-./packer-binaries/x86-packer init ./packer-scripts/x86-ubuntu.pkr.hcl
+./packer-binaries/${ARCH}-packer init ./packer-scripts/x86-ubuntu.pkr.hcl
 
 # Build the image with the specified Ubuntu version
-./packer-binaries/x86-packer build ./packer-scripts/x86-ubuntu.pkr.hcl
+./packer-binaries/${ARCH}-packer build ./packer-scripts/x86-ubuntu.pkr.hcl
